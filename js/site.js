@@ -178,5 +178,33 @@
     } else if (k === "c") {
       copyEmail();
     }
+    dismissHint();
   });
+
+  // ---- first-visit keyboard hint ----
+  var HINT_KEY = "mg-hint-seen";
+  var hintEl = null;
+  var hintTimer = null;
+  function dismissHint() {
+    if (!hintEl) return;
+    hintEl.classList.remove("show");
+    if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+    try { localStorage.setItem(HINT_KEY, "1"); } catch (e) {}
+  }
+  function showHint() {
+    var seen = false;
+    try { seen = !!localStorage.getItem(HINT_KEY); } catch (e) {}
+    if (seen) return;
+    hintEl = document.createElement("div");
+    hintEl.className = "hint-toast";
+    hintEl.setAttribute("role", "status");
+    hintEl.innerHTML =
+      'press <kbd>J</kbd><kbd>K</kbd> to step · <kbd>T</kbd> theme · <kbd>C</kbd> copy email' +
+      '<button type="button" aria-label="Dismiss">×</button>';
+    document.body.appendChild(hintEl);
+    hintEl.querySelector("button").addEventListener("click", dismissHint);
+    requestAnimationFrame(function () { hintEl.classList.add("show"); });
+    hintTimer = setTimeout(dismissHint, 6000);
+  }
+  setTimeout(showHint, 1200);
 })();
