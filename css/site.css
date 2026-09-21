@@ -175,7 +175,29 @@
   }
   .card.in { opacity: 1; transform: none; }
   .card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  @media (prefers-reduced-motion: reduce) { .card { opacity: 1; transform: none; } }
+
+  .card.live-glow {
+    border-color: color-mix(in srgb, var(--green) 55%, var(--rule));
+    animation: mg-live-flash 2.2s ease-in-out infinite;
+  }
+  .card.live-glow:hover {
+    animation-play-state: paused;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  @keyframes mg-live-flash {
+    0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--green) 45%, transparent); }
+    50% { box-shadow: 0 0 0 1px var(--green), 0 0 16px 2px color-mix(in srgb, var(--green) 60%, transparent); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { opacity: 1; transform: none; }
+    .card.live-glow {
+      animation: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--green) 40%, transparent);
+    }
+  }
   @media (max-width: 560px) { .card { padding: 22px 20px; } }
 
   .card-head {
