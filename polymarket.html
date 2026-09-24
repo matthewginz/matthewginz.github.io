@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A cross-venue prediction-market research system by Matthew Ginzburg.">
+<title>Cross-Venue Prediction Markets</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #f5f6f7;
+    --surface: #ffffff;
+    --surface-2: #eef0f2;
+    --ink: #1a1e24;
+    --ink-2: #4a525c;
+    --ink-3: #7b838d;
+    --rule: #dcdfe3;
+    --rule-soft: #e7e9ec;
+    --accent: #2f6f7e;
+    --accent-ink: #235863;
+    --amber: #8a5a22;
+    --amber-bg: #f2e8dc;
+    --green: #35703f;
+    --green-bg: #e3ede4;
+    --accent-bg: #dfeaec;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", "Cascadia Code", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #12151b;
+      --surface: #171b22;
+      --surface-2: #1d222b;
+      --ink: #e7e9ec;
+      --ink-2: #a7aeb7;
+      --ink-3: #767d87;
+      --rule: #2a2f39;
+      --rule-soft: #22262e;
+      --accent: #63b4c4;
+      --accent-ink: #7fc4d2;
+      --amber: #d29a5f;
+      --amber-bg: #2c2318;
+      --green: #6bb277;
+      --green-bg: #1a281c;
+      --accent-bg: #16262b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #12151b;
+    --surface: #171b22;
+    --surface-2: #1d222b;
+    --ink: #e7e9ec;
+    --ink-2: #a7aeb7;
+    --ink-3: #767d87;
+    --rule: #2a2f39;
+    --rule-soft: #22262e;
+    --accent: #63b4c4;
+    --accent-ink: #7fc4d2;
+    --amber: #d29a5f;
+    --amber-bg: #2c2318;
+    --green: #6bb277;
+    --green-bg: #1a281c;
+    --accent-bg: #16262b;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 26px 96px;
+  }
+
+  /* ---- masthead ---- */
+  header {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 20px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 5.4vw, 3.05rem);
+    line-height: 1.08;
+    letter-spacing: -0.012em;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 1.12rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin: 0 0 30px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 8px 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color .15s, color .15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .chip .arrow { color: var(--ink-3); }
+  .chip:hover .arrow { color: var(--accent); }
+
+  /* ---- sections ---- */
+  section { padding: 44px 0; border-bottom: 1px solid var(--rule-soft); }
+  section:last-of-type { border-bottom: none; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 16px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.55rem;
+    line-height: 1.2;
+    letter-spacing: -0.008em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+  p { margin: 0 0 16px; max-width: 66ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  a.inline { color: var(--accent-ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  a.inline:hover { border-bottom-color: var(--accent); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  /* ---- schematic ---- */
+  .schematic {
+    margin: 8px 0 4px;
+    padding: 26px 22px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    overflow-x: auto;
+  }
+  .schematic svg { display: block; min-width: 640px; width: 100%; height: auto; font-family: var(--mono); }
+  .cap {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+
+  /* ---- decision list ---- */
+  .decisions { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .decision {
+    padding: 20px 0;
+    border-top: 1px solid var(--rule-soft);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .decision:first-child { border-top: none; padding-top: 4px; }
+  .decision h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0;
+    color: var(--ink);
+  }
+  .decision p { color: var(--ink-2); font-size: 0.97rem; margin: 0; max-width: 64ch; }
+
+  /* ---- skills strip ---- */
+  .skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .skill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 1px solid var(--rule-soft);
+    padding: 6px 10px;
+  }
+
+  /* ---- status table ---- */
+  .status { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.94rem; }
+  .status td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; color: var(--ink-2); }
+  .status tr:last-child td { border-bottom: none; }
+  .status td.tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 1%;
+    padding-right: 20px;
+  }
+  .t-live { color: var(--green); }
+  .t-honest { color: var(--accent-ink); }
+  .t-design { color: var(--amber); }
+
+  footer {
+    padding: 40px 0 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-3);
+    line-height: 1.7;
+  }
+  footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  footer a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .draw.go path { animation: dash .9s ease forwards; }
+    @keyframes dash { to { stroke-dashoffset: 0; } }
+  }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 0 18px 72px; }
+    header { padding: 44px 0 32px; }
+    section { padding: 36px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="kicker">Systems portfolio · Matthew Ginzburg</p>
+    <h1>A cross-venue prediction-market research system</h1>
+    <p class="standfirst">
+      Two US prediction-market venues, structurally different data models, and a
+      hard deadline on every row: once a match is played, any price data not
+      logged in real time is gone. This is the collection and research stack
+      built around that constraint — ~27,000 lines of Python, ten SQLite
+      databases, a dozen unattended jobs.
+    </p>
+    <div class="chips">
+      <a class="chip" href="https://github.com/matthewginz/polymarket-us-bot" target="_blank" rel="noopener">
+        GitHub — research layer <span class="arrow">↗</span>
+      </a>
+      <a class="chip" href="https://matthewginz.github.io">
+        Full profile <span class="arrow">↗</span>
+      </a>
+      <a class="chip" href="mailto:mginzbur1@stevens.edu">
+        Email <span class="arrow">↗</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <p class="eyebrow">The problem</p>
+    <h2>Prediction markets, priced twice</h2>
+    <p>
+      The same real-world outcome — a striker to score, a team to win in regulation
+      — trades on both <strong>Polymarket US</strong> and <strong>Kalshi</strong>,
+      in two independent order books, under settlement rules that don't always
+      agree (one counts extra-time goals, the other doesn't). Kalshi alone lists
+      over a thousand soccer series across ~76 leagues; its own catalog contains
+      copy-paste errors. Polymarket carries a live score and match clock on its
+      event objects; Kalshi has no such field at all.
+    </p>
+    <p>
+      There is no historical-price endpoint on either side. The system exists to
+      turn that transient, messy, two-venue stream into a clean, queryable record
+      before the information disappears — and to do it correctly enough to run
+      unattended for weeks.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Architecture</p>
+    <h2>Ten databases, deliberately not merged</h2>
+    <p>
+      Three public APIs feed scheduled collectors. The write targets are split by
+      lifecycle and by trust boundary, not lumped into one store — that split is
+      the design.
+    </p>
+    <div class="schematic">
+      <svg viewBox="0 0 720 430" role="img" aria-label="Three public APIs feed scheduled collectors, which write a small live database and several separate research databases. The live database plus a verify-and-archive step feed a cold archive and a single public export. The research databases have no path to the public export.">
+        <defs>
+          <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"></path>
+          </marker>
+        </defs>
+        <g fill="none" stroke="var(--rule)" stroke-width="1.25" color="var(--ink-3)" class="draw">
+          <path pathLength="1" d="M120 66 L120 96" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M360 66 L360 96" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M600 66 L600 96" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M120 132 L120 168" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M360 132 L360 168" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M600 132 L360 168" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M600 132 L600 250" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M120 234 L120 250" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M300 292 L300 320 L120 320 L120 250" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M180 356 L180 388" marker-end="url(#ah)"></path>
+          <path pathLength="1" d="M420 292 L420 388" marker-end="url(#ah)"></path>
+        </g>
+
+        <!-- APIs -->
+        <g font-size="12" fill="var(--ink-2)">
+          <rect x="30" y="30" width="180" height="36" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text x="42" y="52">Polymarket API</text>
+          <rect x="270" y="30" width="180" height="36" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text x="282" y="52">Kalshi API</text>
+          <rect x="510" y="30" width="180" height="36" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text x="522" y="52">api-football</text>
+        </g>
+
+        <!-- collectors -->
+        <g font-size="12" fill="var(--ink)">
+          <rect x="30" y="96" width="180" height="36" fill="var(--accent-bg)" stroke="var(--accent)"></rect>
+          <text x="42" y="118">triples collector</text>
+          <rect x="270" y="96" width="180" height="36" fill="var(--accent-bg)" stroke="var(--accent)"></rect>
+          <text x="282" y="118">market capture</text>
+          <rect x="510" y="96" width="180" height="36" fill="var(--accent-bg)" stroke="var(--accent)"></rect>
+          <text x="522" y="118">lineup timing</text>
+        </g>
+
+        <!-- live db -->
+        <g font-size="12">
+          <rect x="30" y="168" width="180" height="66" fill="var(--surface)" stroke="var(--amber)"></rect>
+          <text x="42" y="190" fill="var(--ink)">polymarket.db</text>
+          <text x="42" y="208" fill="var(--ink-3)" font-size="10.5">LIVE — account ledger</text>
+          <text x="42" y="222" fill="var(--ink-3)" font-size="10.5">+ current season · small post-archive</text>
+
+          <rect x="510" y="168" width="180" height="66" fill="var(--surface)" stroke="var(--rule)"></rect>
+          <text x="522" y="190" fill="var(--ink)">research DBs ×7</text>
+          <text x="522" y="208" fill="var(--ink-3)" font-size="10.5">paper ledgers, arb</text>
+          <text x="522" y="222" fill="var(--ink-3)" font-size="10.5">scanner, fleet</text>
+        </g>
+
+        <!-- archive step -->
+        <g font-size="12">
+          <rect x="210" y="256" width="180" height="36" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text x="222" y="278" fill="var(--ink-2)">verify → back up → delete</text>
+        </g>
+
+        <!-- outputs -->
+        <g font-size="12">
+          <rect x="90" y="388" width="180" height="34" fill="var(--surface)" stroke="var(--rule)"></rect>
+          <text x="102" y="409" fill="var(--ink-2)">historical.db</text>
+          <rect x="330" y="388" width="180" height="34" fill="var(--surface)" stroke="var(--green)"></rect>
+          <text x="342" y="409" fill="var(--ink)">public export</text>
+        </g>
+
+        <text x="430" y="270" font-size="10.5" fill="var(--ink-3)">no path from the 7 research DBs ↑</text>
+      </svg>
+      <p class="cap">
+        Solid = written every run. The account ledger and the archive chain are
+        the only route to a published result; the research databases never reach
+        it. The live DB dropped from 445&nbsp;MB to 760&nbsp;KB the day tick
+        history moved to the cold archive — it's grown since as the account's
+        still-private, ongoing trading keeps using the same ledger file.
+      </p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Engineering</p>
+    <h2>Decisions worth explaining</h2>
+    <div class="decisions">
+      <div class="decision">
+        <h3>Live / archive split by row growth, not table count</h3>
+        <p>
+          The live database's problem was never how many tables it had — it was
+          unbounded tick-history growth. <code>archive_to_historical.py</code> is a
+          standing process: filter by <code>game_slug</code>, verify the copied
+          row count matches the source exactly, take a full backup, then delete.
+          SQLite's cross-database rollback is tested — a failed archive leaves
+          both files untouched.
+        </p>
+      </div>
+      <div class="decision">
+        <h3>Structural market discovery</h3>
+        <p>
+          With 1,000+ Kalshi soccer series and real errors in the venue's own
+          data (a <code>*SPREAD</code> series titled <code>"… Game"</code>),
+          discovery matches on the <em>shape</em> of a real fixture — a
+          <code>"Team vs Team (date)"</code> event sub-title — and cross-checks
+          every ticker against known market-type substrings rather than trusting
+          title text.
+        </p>
+      </div>
+      <div class="decision">
+        <h3>Read-only dashboards that can't stall the writer</h3>
+        <p>
+          Monitoring is a local stdlib HTTP server; every database connection it
+          opens is <code>mode=ro</code>, enforced at the file level. A dashboard
+          can never contend with the live collector. No hosted page — the data is
+          in local SQLite a sandboxed page couldn't reach anyway.
+        </p>
+      </div>
+      <div class="decision">
+        <h3>Client-side rate limiting, from a real incident</h3>
+        <p>
+          65 rate-limit rejections in one session, root-caused to concurrent
+          workers sharing one client with reactive-only backoff. Fixed with a
+          thread-safe token bucket built into the client — smoothing requests
+          under the ceiling beats bursting then sleeping, and it's faster in wall
+          time.
+        </p>
+      </div>
+      <div class="decision">
+        <h3>A hard boundary between paper and real</h3>
+        <p>
+          The funded-account code, order clients, and private keys live in a
+          separate repository and never touch a public remote — a lesson this
+          project learned the direct way. The paper-trading and research
+          databases have no code path into any published result.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">What it demonstrates</p>
+    <h2>Skills in evidence</h2>
+    <div class="skills">
+      <span class="skill">Python · async &amp; threaded I/O</span>
+      <span class="skill">SQLite schema design</span>
+      <span class="skill">Market microstructure</span>
+      <span class="skill">Order-book &amp; fee modeling</span>
+      <span class="skill">Rate limiting / backoff</span>
+      <span class="skill">Unattended job orchestration</span>
+      <span class="skill">Data-quality auditing</span>
+      <span class="skill">Cross-venue reconciliation</span>
+      <span class="skill">Backtest overfitting control</span>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Status &amp; honesty</p>
+    <h2>What works, and what didn't</h2>
+    <p>
+      The interesting result of a research project is often a clean negative, and
+      several of these are.
+    </p>
+    <table class="status">
+      <tr>
+        <td class="tag t-live">Live</td>
+        <td>The collection stack runs unattended on a schedule. Discovery,
+          tiered capture, archival, and the read-only dashboards work as designed.</td>
+      </tr>
+      <tr>
+        <td class="tag t-honest">Honest zero</td>
+        <td>The cross-venue arb scanner mostly finds no edge net of fees, and
+          reports it as a zero rather than forcing a trade. That is the correct
+          outcome, not a failure of the scanner.</td>
+      </tr>
+      <tr>
+        <td class="tag t-honest">Halted by design</td>
+        <td>A separate genetic strategy-discovery pipeline runs a formal
+          multiple-testing gate (Deflated Sharpe, probability of backtest
+          overfitting). It has halted every campaign so far — which is the gate
+          doing its job, and a result worth having.</td>
+      </tr>
+      <tr>
+        <td class="tag t-design">In progress</td>
+        <td>A news-signal research layer (open news feeds vs. Kalshi market
+          moves) is being built with the same overfitting discipline.</td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    <p>
+      Read-only research layer:
+      <a href="https://github.com/matthewginz/polymarket-us-bot" target="_blank" rel="noopener">github.com/matthewginz/polymarket-us-bot</a><br>
+      Full profile: <a href="https://matthewginz.github.io">matthewginz.github.io</a><br>
+      Reach me: <a href="mailto:mginzbur1@stevens.edu">mginzbur1@stevens.edu</a> · (929) 340-6901<br>
+      Code that touches the funded account is private, by design.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    var draw = document.querySelector(".draw");
+    if (draw) {
+      var d2 = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("go"); d2.unobserve(e.target); } });
+      }, { threshold: 0.3 });
+      d2.observe(draw);
+    }
+  })();
+</script>
+
+</body>
+</html>
