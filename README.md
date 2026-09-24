@@ -2,8 +2,8 @@
 
 Personal site for Matthew Ginzburg. Quantitative Finance @ Stevens, class of 2028.
 
-One page, laid out as a node graph: each project, signal, and stack entry is a
-node on a dot-grid canvas, wired together with jagged zigzag connectors that
+One page, laid out as a node graph: the intro, an "off the clock" hobbies
+panel, each project, awards, skills, and contact are nodes on a dot-grid canvas, wired together with jagged zigzag connectors that
 carry a travelling current. No framework, no build step, no dependencies.
 
 ## Run it
@@ -45,6 +45,15 @@ Add or reorder a node by moving its `<section class="node" data-node>` in
 `index.html`. Wires and the left-hand rail redraw from DOM order on every
 resize, so nothing else needs updating. Give a project card `side-l` or
 `side-r` to alternate which side of the canvas it sits on.
+
+## Off the clock
+
+The hobbies node (`#n-hobbies`) is a ski skyline plus two team tiles. The five
+peaks are hand-drawn SVG, roughly to relative height, not to scale. Hovering,
+focusing or clicking a peak or its legend row highlights both (they share a
+`data-peak` key); otherwise `js/site.js` tours through them every 2.6s. Snow
+and the ball animations are skipped under `prefers-reduced-motion`. Team
+colours live in the `--chelsea*` / `--knicks*` tokens in `css/site.css`.
 
 ## Keyboard
 

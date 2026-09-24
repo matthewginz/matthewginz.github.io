@@ -26,6 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/site.css">
+<script>document.documentElement.classList.add("js");</script>
 
 </head>
 <body>
@@ -34,11 +35,11 @@
 
 <div class="topbar-shell">
   <div class="topbar">
-    <div class="who"><span class="live-dot"></span><b>Matthew Ginzburg</b> · open to 2027 quant/data roles</div>
+    <div class="who"><b>Matthew Ginzburg</b><span class="who-sub"> · Quant Finance @ Stevens</span></div>
     <nav>
       <a href="https://github.com/matthewginz" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/matthewginzburg/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="assets/resume.pdf" target="_blank" rel="noopener">CV</a>
+      <a href="assets/resume.pdf" target="_blank" rel="noopener">Résumé</a>
       <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">
         <svg id="themeIcon" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.3v1.6M8 13.1v1.6M2.6 8H1M15 8h-1.6M3.5 3.5l1.1 1.1M11.4 11.4l1.1 1.1M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1"/><circle cx="8" cy="8" r="3.1"/></svg>
         <span id="themeLabel">dark</span>
@@ -51,9 +52,9 @@
   <svg class="connectors" id="connectors"></svg>
 
   <section class="node" id="n-hero" data-node>
-    <div class="card in">
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>ENTRY <span class="id">ent_matthew</span></span>
+        <span class="tag"><span class="sq"></span>ABOUT</span>
         <span class="meta">Hoboken, NJ · Brooklyn, NY</span>
       </div>
 
@@ -67,10 +68,9 @@
       </p>
 
       <div class="metarow">
-        <span>🎓 Stevens BSE '28 · Quantitative Finance</span>
-        <span>📍 Hoboken, NJ</span>
+        <span>🎓 B.S. Quantitative Finance · Stevens Institute of Technology · May 2028</span>
       </div>
-      <div class="status-line"><span class="live-dot"></span>Open to 2027 quant/data roles</div>
+      <div class="status-line"><span class="live-dot"></span>Open to Summer 2027 quant/data internships</div>
 
       <div class="hero-grid">
         <div class="btnrow">
@@ -96,9 +96,9 @@
           <div class="codepanel">
             <span>{</span><br>
             &nbsp;&nbsp;<span class="k">gpa:</span> <span class="v amber">3.7 / 4.0</span><br>
-            &nbsp;&nbsp;<span class="k">vanguard:</span> <span class="v amber">2nd of 50 teams</span><br>
-            &nbsp;&nbsp;<span class="k">scholars:</span> <span class="v amber">$104k + $20k</span><br>
-            &nbsp;&nbsp;<span class="k">live:</span> <span class="v">["10-Q Agent", "KaiserIQ"]</span><br>
+            &nbsp;&nbsp;<span class="k">vanguard:</span> <span class="v amber">#1 total return, 50 teams</span><br>
+            &nbsp;&nbsp;<span class="k">scholarships:</span> <span class="v amber">$104k + $20k</span><br>
+            &nbsp;&nbsp;<span class="k">live:</span> <span class="v">["10-Q Agent", "Kaiser-Stats"]</span><br>
             &nbsp;&nbsp;<span class="k">building:</span> <span class="v">"Agenthon 2026 (NeurIPS)"</span><br>
             <span>}</span>
             <span class="cmt">// every number above is on the résumé</span>
@@ -109,28 +109,122 @@
           </div>
           <div class="chiprow">
             <span class="chip">R</span><span class="chip">TypeScript / JS</span>
-            <span class="chip">LangGraph</span><span class="chip">Streamlit</span>
+            <span class="chip">Gemini API</span><span class="chip">Git</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="node" id="n-router" data-node style="margin-top:56px;">
-    <div class="card in router-card">
-      <div class="card-head" style="margin-bottom:10px;">
-        <span class="tag"><span class="sq"></span>ROUTER <span class="id">rtr_001</span></span>
+  <section class="node" id="n-hobbies" data-node>
+    <div class="card hobbies-card">
+      <div class="card-head">
+        <span class="tag"><span class="sq"></span>OFF THE CLOCK</span>
+        <span class="meta">skiing · soccer · basketball</span>
       </div>
-      <p>auto-fire: 4 projects · 1 competition · signals</p>
+      <h2 class="ctitle" style="margin-bottom:16px;">When the markets close.</h2>
+
+      <div class="hobby-grid">
+        <div class="hobby ski" id="ski">
+          <div class="snow" aria-hidden="true"></div>
+          <div class="hobby-label"><span>Skiing</span><span>5 mountains · 3 countries</span></div>
+          <div class="ski-readout"><span class="tri">▲</span> <span id="skiReadout">hover a mountain</span></div>
+
+          <svg class="ski-map" id="skiMap" viewBox="0 0 480 240" role="img" aria-label="Skyline of the five mountains I've skied, drawn to rough relative height: Shawnee, Mont-Tremblant, Killington, the Dolomites and the Matterhorn">
+            <defs>
+              <linearGradient id="rockGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" class="rock-top"/>
+                <stop offset="1" class="rock-base"/>
+              </linearGradient>
+            </defs>
+            <g class="peak" data-peak="matterhorn">
+              <path class="rock" d="M338 232 L384 126.4 L397 78.4 L404 46.4 L411 27.2 L419 35.2 L417 64 L431 110.4 L480 232 Z"/>
+              <path class="snowcap" d="M395 84.8 L404 46.4 L411 27.2 L419 35.2 L417 64 L423 86.4 L413 75.2 L405 92.8 Z"/>
+              <circle class="pin-ring" cx="411" cy="27.2" r="7"/><circle class="pin" cx="411" cy="27.2" r="3.2"/>
+            </g>
+            <g class="peak" data-peak="dolomites">
+              <path class="rock" d="M248 232 L279 155.2 L289 166.4 L301 97.6 L309 123.2 L315 78.4 L322 115.2 L332 92.8 L341 145.6 L352 132.8 L384 232 Z"/>
+              <path class="snowcap" d="M298 113.6 L301 97.6 L304 110.4 Z M311 94.4 L315 78.4 L319 97.6 Z M329 104 L332 92.8 L335 107.2 Z"/>
+              <circle class="pin-ring" cx="315" cy="78.4" r="7"/><circle class="pin" cx="315" cy="78.4" r="3.2"/>
+            </g>
+            <g class="peak" data-peak="killington">
+              <path class="rock" d="M158 232 L204 158.4 L225 139.2 L246 156.8 L292 232 Z"/>
+              <path class="snowcap" d="M211 150.4 L225 139.2 L239 150.4 L231 156.8 L225 148.8 L218 156.8 Z"/>
+              <circle class="pin-ring" cx="225" cy="139.2" r="7"/><circle class="pin" cx="225" cy="139.2" r="3.2"/>
+            </g>
+            <g class="peak" data-peak="tremblant">
+              <path class="rock" d="M72 232 L120 172.8 L140 158.4 L162 174.4 L206 232 Z"/>
+              <path class="snowcap" d="M127 168 L140 158.4 L153 168 L146 172.8 L140 166.4 L133 172.8 Z"/>
+              <circle class="pin-ring" cx="140" cy="158.4" r="7"/><circle class="pin" cx="140" cy="158.4" r="3.2"/>
+            </g>
+            <g class="peak" data-peak="shawnee">
+              <path class="rock" d="M0 232 C24 232 34 177.6 55 177.6 C76 177.6 88 232 114 232 Z"/>
+              <circle class="pin-ring" cx="55" cy="177.6" r="7"/><circle class="pin" cx="55" cy="177.6" r="3.2"/>
+            </g>
+            <line class="ground" x1="0" y1="232" x2="480" y2="232"/>
+          </svg>
+
+          <ul class="ski-list">
+            <li data-peak="tremblant" tabindex="0" data-label="Mont-Tremblant · Laurentians, Québec"><span class="cc">CA</span><b>Mont-Tremblant</b><span class="rg">Québec</span></li>
+            <li data-peak="dolomites" tabindex="0" data-label="The Dolomites · Northern Italy"><span class="cc">IT</span><b>Dolomites</b><span class="rg">Northern Italy</span></li>
+            <li data-peak="matterhorn" tabindex="0" data-label="The Matterhorn · Pennine Alps, Italy"><span class="cc">IT</span><b>Matterhorn</b><span class="rg">Pennine Alps</span></li>
+            <li data-peak="killington" tabindex="0" data-label="Killington · Green Mountains, Vermont"><span class="cc">US</span><b>Killington</b><span class="rg">Vermont</span></li>
+            <li data-peak="shawnee" tabindex="0" data-label="Shawnee Mountain · Poconos, Pennsylvania"><span class="cc">US</span><b>Shawnee</b><span class="rg">Pennsylvania</span></li>
+          </ul>
+        </div>
+
+        <div class="hobby team chelsea">
+          <div class="hobby-label"><span>Soccer</span><span>supports</span></div>
+          <div class="hobby-name">Chelsea FC</div>
+          <div class="hobby-sub">Stamford Bridge · London · plays in Soccer Club</div>
+          <svg class="field" viewBox="0 0 200 90" aria-hidden="true">
+            <rect x="2" y="2" width="196" height="86" rx="2"/>
+            <line x1="100" y1="2" x2="100" y2="88"/>
+            <circle cx="100" cy="45" r="13"/>
+            <rect x="2" y="24" width="24" height="42"/>
+            <rect x="174" y="24" width="24" height="42"/>
+            <rect class="goal" x="195" y="37" width="5" height="16"/>
+            <circle class="mate" cx="58" cy="62" r="3.4"/>
+            <circle class="mate" cx="98" cy="28" r="3.4"/>
+            <circle class="mate" cx="134" cy="60" r="3.4"/>
+            <circle class="mate" cx="160" cy="36" r="3.4"/>
+            <circle class="ball" r="2.6" data-rest="58 62">
+              <animateMotion dur="6s" repeatCount="indefinite" calcMode="linear"
+                keyTimes="0;0.2;0.25;0.45;0.5;0.65;0.7;0.85;1"
+                keyPoints="0;0.2;0.2;0.43;0.43;0.62;0.62;1;1"
+                path="M58 62 L98 28 L134 60 L160 36 L197 45"/>
+            </circle>
+          </svg>
+        </div>
+
+        <div class="hobby team knicks">
+          <div class="hobby-label"><span>Basketball</span><span>supports</span></div>
+          <div class="hobby-name">New York Knicks</div>
+          <div class="hobby-sub">Madison Square Garden · New York</div>
+          <svg class="field" viewBox="0 0 200 90" aria-hidden="true">
+            <rect x="2" y="2" width="196" height="86" rx="2"/>
+            <rect x="138" y="30" width="60" height="30"/>
+            <circle cx="138" cy="45" r="15"/>
+            <path d="M198 8 H178 A40 40 0 1 0 178 82 H198"/>
+            <line class="board" x1="188" y1="36" x2="188" y2="54"/>
+            <circle class="hoop" cx="182" cy="45" r="4.2"/>
+            <circle class="ball" r="4" data-rest="182 41">
+              <animateMotion dur="3.2s" repeatCount="indefinite" calcMode="spline"
+                keyTimes="0;0.55;1" keyPoints="0;1;1" keySplines="0.3 0 0.6 1;0 0 1 1"
+                path="M40 70 Q110 -18 182 41"/>
+            </circle>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
   <div class="section-label"><span>Projects</span><span class="count">04</span></div>
 
-  <section class="node side-l" id="n-p3" data-node>
-    <div class="card in">
+  <section class="node side-l" id="n-polymarket" data-node>
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>PROJECT <span class="id">prj_polymarket</span></span>
+        <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge amber">Monte Carlo–validated</span>
       </div>
       <div class="ctitle-row"><h2 class="ctitle">Polymarket US World Cup Research</h2><span class="sub">Cross-venue prediction-market mispricing</span></div>
@@ -161,61 +255,60 @@
     </div>
   </section>
 
-  <section class="node side-r" id="n-p1" data-node>
-    <div class="card in live-glow">
+  <section class="node side-r" id="n-10q" data-node>
+    <div class="card live-glow">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>PROJECT <span class="id">prj_10q</span></span>
+        <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge live">live</span>
       </div>
-      <div class="ctitle-row"><h2 class="ctitle">10-Q Equity Research Agent</h2><span class="sub">SEC-filing → equity stance pipeline</span></div>
+      <div class="ctitle-row"><h2 class="ctitle">10-Q Equity Research Agent</h2><span class="sub">Summer 2025</span></div>
       <p class="body">
-        Pulls any US-listed company's real, latest 10-Q straight from SEC EDGAR and runs
-        it through a 5-step grounded LLM pipeline (<code>LangGraph</code>) to a final
-        equity research stance.
+        Parses a company's real 10-Q filing and standardized XBRL financial data live
+        from SEC EDGAR, then runs a 5-step <code>Gemini API</code> pipeline (quantitative
+        snapshot, risk synthesis, consistency check, capital allocation) to produce an
+        informed equity recommendation.
       </p>
       <div class="metrics">
         <div><span class="lbl">Pipeline</span><span class="val amber">5 steps</span></div>
         <div><span class="lbl">Source</span><span class="val">SEC EDGAR, live</span></div>
-        <div><span class="lbl">Orchestration</span><span class="val">LangGraph</span></div>
-        <div><span class="lbl">Status</span><span class="val">shipped</span></div>
+        <div><span class="lbl">Data</span><span class="val">10-Q + XBRL</span></div>
+        <div><span class="lbl">Model</span><span class="val">Gemini API</span></div>
       </div>
       <div class="chiprow" style="margin:0 0 16px;">
-        <span class="chip">SEC EDGAR</span><span class="chip">LangGraph</span>
-        <span class="chip">LLM pipeline</span><span class="chip">equity research</span>
+        <span class="chip">SEC EDGAR</span><span class="chip">XBRL</span><span class="chip">Gemini API</span>
+        <span class="chip">Streamlit</span><span class="chip">equity research</span>
       </div>
       <div class="linkrow">
         <a class="btn" href="https://10q-equity-agent-esldzub5xgfc3j8mcc8u42.streamlit.app/" target="_blank" rel="noopener">
-          streamlit app <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h7v7M13 3L3 13"/></svg>
+          try the app <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h7v7M13 3L3 13"/></svg>
         </a>
-        <details class="more">
-          <summary><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 2l6 6-6 6"/></svg>details</summary>
-          <div class="more-body">Grounds every claim in the actual filing text rather than model memory, then scores key ratios (liquidity, leverage, margin trend) into a buy/hold/sell-leaning stance with citations back to the source pages.</div>
-        </details>
       </div>
     </div>
   </section>
 
-  <section class="node side-l" id="n-p2" data-node>
-    <div class="card in live-glow">
+  <section class="node side-l" id="n-kaiser" data-node>
+    <div class="card live-glow">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>PROJECT <span class="id">prj_kaiseriq</span></span>
+        <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge live">live</span>
       </div>
-      <div class="ctitle-row"><h2 class="ctitle">KaiserIQ</h2><span class="sub">Stats engine &amp; matchday ops for a rec soccer league</span></div>
+      <div class="ctitle-row"><h2 class="ctitle">Kaiser-Stats</h2><span class="sub">Jul – Aug 2026</span></div>
       <p class="body">
-        Stats engine, power rankings, and a live matchday check-in/draft system for a
-        recurring soccer league — parses game reports, resolves player identity
-        conservatively (flag, never auto-merge), and rebuilds rankings after every match.
+        A stats engine for a local soccer league. It parses inconsistent historical
+        spreadsheet formats, streamlines registration, and turns live game-report emails
+        (via the <code>Gemini API</code>) into one unified per-player dataset, with
+        data-integrity safeguards (player identity resolution, plus-minus sanity checks)
+        and a transparent power-ranking formula.
       </p>
       <div class="metrics">
-        <div><span class="lbl">Domain</span><span class="val">rec soccer league</span></div>
-        <div><span class="lbl">Features</span><span class="val">stats · rankings · draft</span></div>
+        <div><span class="lbl">Domain</span><span class="val">local soccer league</span></div>
+        <div><span class="lbl">Parsing</span><span class="val">Gemini API</span></div>
+        <div><span class="lbl">Safeguards</span><span class="val">identity · +/- checks</span></div>
         <div><span class="lbl">Stack</span><span class="val">Next.js + Supabase</span></div>
-        <div><span class="lbl">Status</span><span class="val">shipped</span></div>
       </div>
       <div class="chiprow" style="margin:0 0 16px;">
         <span class="chip">Next.js</span><span class="chip">Supabase</span>
-        <span class="chip">TypeScript</span><span class="chip">report parsing</span>
+        <span class="chip">TypeScript</span><span class="chip">Gemini API</span>
       </div>
       <div class="linkrow">
         <a class="btn" href="https://kaiser-stats.vercel.app" target="_blank" rel="noopener">
@@ -226,16 +319,16 @@
     </div>
   </section>
 
-  <section class="node side-r" id="n-p4" data-node>
-    <div class="card in">
+  <section class="node side-r" id="n-agenthon" data-node>
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>PROJECT <span class="id">prj_agenthon</span></span>
+        <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge">in progress</span>
       </div>
       <div class="ctitle-row"><h2 class="ctitle">Agenthon 2026 Coding Agent</h2><span class="sub">Self-correcting agent for a NeurIPS quant-finance track</span></div>
       <p class="body">
         Building an autonomous coding agent for Agenthon 2026, a NeurIPS
-        quantitative-finance coding-agent competition — self-corrects against real
+        quantitative-finance coding-agent competition. It self-corrects against real
         <code>pytest</code>-based financial invariant checks rather than a static test suite.
       </p>
       <div class="metrics">
@@ -251,18 +344,18 @@
     </div>
   </section>
 
-  <div class="section-label"><span>Signals &amp; Stack</span></div>
+  <div class="section-label"><span>Awards &amp; Skills</span></div>
 
-  <section class="node side-l" id="n-honors" data-node>
-    <div class="card in">
+  <section class="node side-l" id="n-awards" data-node>
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>SIGNAL <span class="id">sig_honors</span></span>
-        <span class="meta">honors &amp; awards</span>
+        <span class="tag"><span class="sq"></span>AWARDS</span>
       </div>
-      <h2 class="ctitle" style="margin-bottom:14px;">Priced in.</h2>
+      <h2 class="ctitle" style="margin-bottom:14px;">Honors &amp; awards</h2>
       <div class="kv">
-        <div class="row"><span class="l">Vanguard ETF Trading Competition</span><span class="r"><b>2nd</b> / 50 teams</span></div>
-        <div class="row"><span class="l">— largest portfolio value / #1 total return, pitched at the NYSE</span><span class="r"><b>2nd</b> place, invitational pitch</span></div>
+        <div class="row"><span class="l">Vanguard ETF Challenge — total return</span><span class="r"><b>#1</b> of 50 teams</span></div>
+        <div class="row"><span class="l">'RHO' ETF pitch — NYSE invitational</span><span class="r"><b>2nd</b> place</span></div>
+        <div class="row"><span class="l">FIBA Stock Pitch — Disney DCF <a href="https://raw.githubusercontent.com/matthewginz/10q-equity-agent/main/docs/Disney_FIBA_Stock_Pitch.pdf" target="_blank" rel="noopener">deck ↗</a></span><span class="r"><b>3rd</b> place</span></div>
         <div class="row"><span class="l">Edwin Augustus Stevens Scholarship</span><span class="r"><b>$104k</b></span></div>
         <div class="row"><span class="l">Presidential Scholarship</span><span class="r"><b>$20k</b></span></div>
         <div class="row"><span class="l">GPA</span><span class="r"><b>3.7</b> / 4.0</span></div>
@@ -274,50 +367,56 @@
     </div>
   </section>
 
-  <section class="node side-r" id="n-stack" data-node>
-    <div class="card in">
+  <section class="node side-r" id="n-skills" data-node>
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>STACK <span class="id">stk_tooling</span></span>
-        <span class="meta">what I reach for</span>
+        <span class="tag"><span class="sq"></span>SKILLS</span>
       </div>
       <div class="stackgroup">
-        <h3>Languages</h3>
+        <h3>Programming</h3>
         <div class="chiprow">
-          <span class="chip">Python</span><span class="chip">C++</span><span class="chip">Java</span>
-          <span class="chip">SQL</span><span class="chip">R</span><span class="chip">TypeScript / JS</span>
+          <span class="chip">Python</span><span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">scikit-learn</span>
+          <span class="chip">SQL</span><span class="chip">C++</span><span class="chip">TypeScript / JS</span><span class="chip">R</span><span class="chip">Git</span>
         </div>
       </div>
       <div class="stackgroup">
         <h3>Data &amp; ML</h3>
         <div class="chiprow">
-          <span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">scikit-learn</span>
-          <span class="chip">statistical modeling</span><span class="chip">Monte Carlo methods</span>
-        </div>
-        <div class="chiprow" style="margin-top:7px;">
-          <span class="chip">market microstructure</span><span class="chip">time-series forecasting</span>
+          <span class="chip">statistical modeling</span><span class="chip">predictive analytics</span>
+          <span class="chip">reinforcement learning</span><span class="chip">NLP</span>
+          <span class="chip">time-series forecasting</span><span class="chip">optimization</span>
+          <span class="chip">stochastic processes</span><span class="chip">Monte Carlo methods</span>
           <span class="chip">portfolio optimization</span><span class="chip">risk management</span>
         </div>
       </div>
       <div class="stackgroup">
-        <h3>Platforms &amp; Tools</h3>
+        <h3>Platforms</h3>
         <div class="chiprow">
-          <span class="chip">LangGraph</span><span class="chip">Streamlit</span><span class="chip">SEC EDGAR API</span>
-          <span class="chip">Next.js</span><span class="chip">Supabase</span><span class="chip">Vercel</span><span class="chip">Git</span>
+          <span class="chip">Gemini API</span><span class="chip">SEC EDGAR</span><span class="chip">Streamlit</span>
+          <span class="chip">Next.js</span><span class="chip">Supabase</span><span class="chip">Vercel</span>
+        </div>
+      </div>
+      <div class="stackgroup">
+        <h3>Coursework</h3>
+        <div class="chiprow">
+          <span class="chip">Financial Time Series</span><span class="chip">Algorithms (C++)</span>
+          <span class="chip">Adv. Probability &amp; Stochastic Processes for QF</span>
+          <span class="chip">Financial Econometrics</span><span class="chip">Adv. Time Series &amp; ML</span>
+          <span class="chip">Market Microstructure Trading Strategies</span><span class="chip">Linear Algebra</span>
         </div>
       </div>
     </div>
   </section>
 
   <section class="node" id="n-contact" data-node>
-    <div class="card in">
+    <div class="card">
       <div class="card-head">
-        <span class="tag"><span class="sq"></span>OUTPUT <span class="id">out_contact</span></span>
-        <span class="meta">reply within ~24h</span>
+        <span class="tag"><span class="sq"></span>CONTACT</span>
       </div>
       <h2 class="ctitle" style="margin-bottom:12px;">Let's talk.</h2>
       <p class="body">
-        I'm open to 2027 quant/data roles. Email
-        or LinkedIn are the fastest ways to reach me.
+        I'm looking for Summer 2027 quant/data internships. Email or LinkedIn is the
+        fastest way to reach me.
       </p>
       <div class="contact-row">
         <span class="email-box">

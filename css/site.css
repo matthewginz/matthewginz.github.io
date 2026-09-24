@@ -12,6 +12,14 @@
     --accent-bg: #f2e2c4;
     --green: #2f7d4f;
     --green-bg: #dfeee4;
+    --peak-top: #8f8a82;
+    --peak-base: #d9d5ce;
+    --snow: #fbfaf8;
+    --chelsea: #034694;
+    --chelsea-ink: #034694;
+    --knicks: #006bb6;
+    --knicks-ink: #005a9c;
+    --knicks-orange: #f58426;
     --mono: "IBM Plex Mono", "SF Mono", Consolas, monospace;
     --sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
@@ -30,6 +38,13 @@
       --accent-bg: #2a2013;
       --green: #56b57e;
       --green-bg: #17251c;
+      --peak-top: #3a3d45;
+      --peak-base: #16171b;
+      --snow: #e6e8ee;
+      --chelsea: #2f6fd6;
+      --chelsea-ink: #7aa7f0;
+      --knicks: #1f86d6;
+      --knicks-ink: #6fb4ee;
     }
   }
   :root[data-theme="dark"] {
@@ -46,6 +61,13 @@
     --accent-bg: #2a2013;
     --green: #56b57e;
     --green-bg: #17251c;
+    --peak-top: #3a3d45;
+    --peak-base: #16171b;
+    --snow: #e6e8ee;
+    --chelsea: #2f6fd6;
+    --chelsea-ink: #7aa7f0;
+    --knicks: #1f86d6;
+    --knicks-ink: #6fb4ee;
   }
 
   * { box-sizing: border-box; }
@@ -113,6 +135,15 @@
     padding: 5px 11px; cursor: pointer; display: flex; align-items: center; gap: 6px;
   }
   .theme-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
+  @media (max-width: 600px) {
+    .topbar { padding: 14px 16px; }
+    .topbar .who-sub { display: none; }
+    .topbar nav { gap: 12px; }
+  }
+  @media (max-width: 380px) {
+    .theme-btn #themeLabel { display: none; }
+    .topbar nav { gap: 10px; }
+  }
 
   .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px 160px; position: relative; }
 
@@ -133,6 +164,7 @@
     0% { opacity: 1; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 85%, transparent)); }
     100% { opacity: .38; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--accent) 35%, transparent)); }
   }
+  svg.connectors path.go.settled { animation: none; opacity: .38; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--accent) 35%, transparent)); }
   svg.connectors circle { fill: var(--ground); stroke: var(--rule); stroke-width: 1.25; }
   svg.connectors circle.active { fill: var(--accent); stroke: var(--accent); }
   svg.connectors path.current-line {
@@ -170,10 +202,10 @@
     border: 1px solid var(--rule);
     border-radius: 8px;
     padding: 30px 32px;
-    opacity: 0; transform: translateY(14px);
     transition: opacity .5s ease, transform .5s ease, border-color .2s ease, box-shadow .2s ease;
   }
-  .card.in { opacity: 1; transform: none; }
+  .js .card { opacity: 0; transform: translateY(14px); }
+  .js .card.in { opacity: 1; transform: none; }
   .card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
   .card.live-glow {
@@ -191,7 +223,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card { opacity: 1; transform: none; }
+    .js .card { opacity: 1; transform: none; }
     .card.live-glow {
       animation: none;
       border-color: var(--green);
@@ -261,8 +293,6 @@
     padding: 5px 9px;
   }
 
-  .router-card { max-width: 340px; margin: 0 auto; text-align: left; }
-  .router-card p { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
 
   h2.ctitle { font-family: var(--sans); font-weight: 700; font-size: 1.4rem; margin: 0; letter-spacing: -.005em; }
   .ctitle-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -293,6 +323,8 @@
   .kv .row .l { color: var(--ink-2); }
   .kv .row .r { font-family: var(--mono); color: var(--ink); text-align: right; }
   .kv .row .r b { color: var(--accent-ink); }
+  .kv .row .l a { font-family: var(--mono); font-size: .78em; color: var(--accent-ink); text-decoration: none; margin-left: 6px; white-space: nowrap; }
+  .kv .row .l a:hover { text-decoration: underline; }
 
   .stackgroup { margin-bottom: 22px; }
   .stackgroup:last-child { margin-bottom: 0; }
@@ -319,6 +351,101 @@
   kbd {
     font-family: var(--mono); border: 1px solid var(--rule); border-radius: 4px;
     padding: 1px 6px; background: var(--surface); font-size: 11px;
+  }
+
+  /* ---- off the clock (hobbies) ---- */
+  .hobby-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .hobby-grid { grid-template-columns: 1fr; } }
+  .hobby {
+    position: relative; overflow: hidden;
+    background: var(--surface-2); border: 1px solid var(--rule-soft); border-radius: 6px;
+    padding: 16px 18px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .hobby > * { position: relative; }
+  .hobby-label {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .hobby-name { font-weight: 700; font-size: 1.3rem; letter-spacing: -.005em; margin: 8px 0 2px; }
+  .hobby-sub { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+
+  /* skiing: skyline + legend */
+  .hobby.ski { grid-row: span 2; display: flex; flex-direction: column; }
+  .hobby.ski:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .ski-readout { font-family: var(--mono); font-size: 12.5px; color: var(--ink); margin: 10px 0 4px; min-height: 1.6em; }
+  .ski-readout .tri { color: var(--accent); font-size: 10px; }
+  .ski-map { width: 100%; height: auto; display: block; margin-top: auto; overflow: visible; }
+  .ski-map .rock-top { stop-color: var(--peak-top); }
+  .ski-map .rock-base { stop-color: var(--peak-base); }
+  .ski-map .rock { fill: url(#rockGrad); stroke: var(--surface-2); stroke-width: 1.5; stroke-linejoin: round; transition: stroke .25s ease; }
+  .ski-map .snowcap { fill: var(--snow); opacity: .92; }
+  .ski-map .ground { stroke: var(--rule); stroke-width: 1; }
+  .ski-map .peak { cursor: pointer; transition: opacity .3s ease; }
+  .ski-map .pin { fill: var(--accent); stroke: var(--surface-2); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; transition: transform .25s ease; }
+  .ski-map .pin-ring { fill: none; stroke: var(--accent); stroke-width: 1.2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .ski-map.has-on .peak:not(.on) { opacity: .45; }
+  .ski-map .peak.on .rock { stroke: var(--accent); }
+  .ski-map .peak.on .pin { transform: scale(1.5); }
+  .ski-map .peak.on .pin-ring { animation: mg-ping 1.8s ease-out infinite; }
+  @keyframes mg-ping {
+    0% { opacity: .9; transform: scale(.5); }
+    100% { opacity: 0; transform: scale(2.2); }
+  }
+  .ski-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 18px; }
+  .ski-list li {
+    display: flex; align-items: baseline; gap: 8px; padding: 5px 6px; margin: 0 -6px;
+    border-radius: 4px; cursor: pointer; font-size: .9rem; transition: background .2s ease;
+  }
+  .ski-list li:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+  .ski-list li.on { background: var(--accent-bg); }
+  .ski-list li.on b { color: var(--accent-ink); }
+  .ski-list .cc { font-family: var(--mono); font-size: 10px; color: var(--ink-3); border: 1px solid var(--rule); border-radius: 3px; padding: 0 4px; }
+  .ski-list b { font-weight: 600; color: var(--ink); }
+  .ski-list .rg { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-left: auto; white-space: nowrap; }
+  .ski-list b { white-space: nowrap; }
+
+  .snow { position: absolute !important; inset: 0; pointer-events: none; overflow: hidden; }
+  .snow i {
+    position: absolute; top: -8px; border-radius: 50%; background: var(--snow);
+    opacity: .55; animation: mg-snow linear infinite;
+  }
+  @keyframes mg-snow {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(10px, 190px); }
+    100% { transform: translate(-6px, 380px); }
+  }
+
+  /* team tiles */
+  .hobby.team {
+    --team: var(--accent); --team-ink: var(--accent-ink); --team-2: var(--accent);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--team) 16%, var(--surface-2)), var(--surface-2) 65%);
+    padding-top: 19px;
+  }
+  .hobby.team::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: linear-gradient(90deg, var(--team) 0 62%, var(--team-2) 62% 100%);
+  }
+  .hobby.team .hobby-name { color: var(--team-ink); }
+  .hobby.team:hover {
+    border-color: var(--team);
+    box-shadow: 0 0 0 1px var(--team), 0 0 22px -4px color-mix(in srgb, var(--team) 55%, transparent);
+  }
+  .hobby.chelsea { --team: var(--chelsea); --team-ink: var(--chelsea-ink); --team-2: #ffffff; }
+  .hobby.knicks { --team: var(--knicks); --team-ink: var(--knicks-ink); --team-2: var(--knicks-orange); }
+
+  .field { width: 100%; height: auto; display: block; margin-top: 12px; }
+  .field rect, .field line, .field circle, .field path { fill: none; stroke: color-mix(in srgb, var(--team) 45%, var(--rule)); stroke-width: 1; }
+  .field .mate { fill: var(--team); stroke: none; opacity: .75; }
+  .field .goal { stroke: var(--ink-3); }
+  .field .board { stroke: var(--ink-2); stroke-width: 1.6; }
+  .field .hoop { stroke: var(--knicks-orange); stroke-width: 1.4; }
+  .field .ball { stroke: none; }
+  .chelsea .field .ball { fill: var(--ink); }
+  .knicks .field .ball { fill: var(--knicks-orange); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ski-map .peak.on .pin-ring { animation: none; opacity: .6; transform: scale(1.4); }
   }
 
   /* ---- focus-visible ---- */
@@ -370,7 +497,7 @@
   /* ---- print ---- */
   @media print {
     body { background: #fff; color: #111; }
-    .rail, .topbar-shell, svg.connectors, footer.kbdhint, .hint-toast, .theme-btn { display: none !important; }
+    .rail, .topbar-shell, svg.connectors, footer.kbdhint, .hint-toast, .theme-btn, .snow { display: none !important; }
     .card {
       opacity: 1 !important; transform: none !important;
       border: 1px solid #ccc; box-shadow: none !important; animation: none !important;

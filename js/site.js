@@ -7,16 +7,17 @@
   var themeLabel = document.getElementById("themeLabel");
   function getStored() { try { return localStorage.getItem("mg-theme"); } catch (e) { return null; } }
   function setStored(v) { try { localStorage.setItem("mg-theme", v); } catch (e) {} }
+  function systemTheme() {
+    return window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  }
   function currentTheme() {
-    var explicit = root.getAttribute("data-theme");
-    if (explicit) return explicit;
-    return "dark";
+    return root.getAttribute("data-theme") || systemTheme();
   }
   function applyTheme(t) {
     root.setAttribute("data-theme", t);
     if (themeLabel) themeLabel.textContent = t;
   }
-  applyTheme(getStored() || "dark");
+  applyTheme(getStored() || systemTheme());
   if (themeBtn) {
     themeBtn.addEventListener("click", function () {
       var next = currentTheme() === "dark" ? "light" : "dark";
@@ -76,6 +77,8 @@
     return d;
   }
 
+  var revealed = [];
+
   function drawConnectors() {
     if (!wrap || !svg) return;
     var wrapRect = wrap.getBoundingClientRect();
@@ -96,6 +99,7 @@
       path.setAttribute("d", d);
       path.setAttribute("id", pathId);
       path.dataset.index = i;
+      if (revealed[i + 1]) path.classList.add("go", "settled");
       svg.appendChild(path);
       var c1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       c1.setAttribute("cx", x1); c1.setAttribute("cy", y1); c1.setAttribute("r", 3);
@@ -126,9 +130,14 @@
       Array.prototype.forEach.call(svg.querySelectorAll("path"), function (p) { p.classList.add("go"); });
     }
   }
+  var redrawTimer = null;
+  function scheduleRedraw(delay) {
+    clearTimeout(redrawTimer);
+    redrawTimer = setTimeout(function () { drawConnectors(); setActive(activeIndex); }, delay || 0);
+  }
   drawConnectors();
-  window.addEventListener("resize", drawConnectors);
-  window.addEventListener("load", drawConnectors);
+  window.addEventListener("resize", function () { scheduleRedraw(80); });
+  window.addEventListener("load", function () { scheduleRedraw(0); });
 
   var activeIndex = 0;
   function setActive(i) {
@@ -145,16 +154,26 @@
       entries.forEach(function (e) {
         if (e.isIntersecting) {
           var idx = nodes.indexOf(e.target);
+          if (revealed[idx]) return;
+          revealed[idx] = true;
           if (idx > 0) {
             var p = svg.querySelector('path[data-index="' + (idx - 1) + '"]');
             if (p) p.classList.add("go");
           }
           var card = e.target.querySelector(".card");
           if (card) card.classList.add("in");
+          // cards slide 14px while revealing; re-measure wires once they settle
+          scheduleRedraw(600);
         }
       });
     }, { threshold: 0.15 });
     nodes.forEach(function (n) { pathObs.observe(n); });
+  } else {
+    nodes.forEach(function (n, idx) {
+      revealed[idx] = true;
+      var card = n.querySelector(".card");
+      if (card) card.classList.add("in");
+    });
   }
 
   var navObs = ("IntersectionObserver" in window) ? new IntersectionObserver(function (entries) {
@@ -163,6 +182,73 @@
     });
   }, { threshold: 0.5 }) : null;
   if (navObs) nodes.forEach(function (n) { navObs.observe(n); });
+
+  // ---- off the clock: ski skyline <-> legend ----
+  var ski = document.getElementById("ski");
+  if (ski) initSki(ski);
+
+  function initSki(tile) {
+    var map = document.getElementById("skiMap");
+    var readout = document.getElementById("skiReadout");
+    var items = Array.prototype.slice.call(tile.querySelectorAll("li[data-peak]"));
+    var tour = ["shawnee", "tremblant", "killington", "dolomites", "matterhorn"];
+    var tourIdx = 0, tourTimer = null;
+
+    function setPeak(name) {
+      Array.prototype.forEach.call(tile.querySelectorAll("[data-peak]"), function (el) {
+        el.classList.toggle("on", el.getAttribute("data-peak") === name);
+      });
+      map.classList.toggle("has-on", !!name);
+      var li = tile.querySelector('li[data-peak="' + name + '"]');
+      readout.textContent = li ? li.getAttribute("data-label") : "hover a mountain";
+    }
+    function startTour() {
+      if (reduceMotion || tourTimer) return;
+      tourTimer = setInterval(function () {
+        tourIdx = (tourIdx + 1) % tour.length;
+        setPeak(tour[tourIdx]);
+      }, 2600);
+    }
+    function stopTour() { clearInterval(tourTimer); tourTimer = null; }
+
+    Array.prototype.forEach.call(tile.querySelectorAll("[data-peak]"), function (el) {
+      var name = el.getAttribute("data-peak");
+      el.addEventListener("mouseenter", function () { stopTour(); setPeak(name); tourIdx = tour.indexOf(name); });
+      el.addEventListener("focus", function () { stopTour(); setPeak(name); tourIdx = tour.indexOf(name); });
+      el.addEventListener("click", function () { stopTour(); setPeak(name); tourIdx = tour.indexOf(name); });
+    });
+    tile.addEventListener("mouseleave", startTour);
+    items.forEach(function (li) { li.addEventListener("blur", startTour); });
+
+    setPeak(tour[tour.length - 1]);
+    tourIdx = tour.length - 1;
+    startTour();
+
+    if (!reduceMotion) {
+      var snow = tile.querySelector(".snow");
+      for (var f = 0; f < 28; f++) {
+        var flake = document.createElement("i");
+        var size = 1.5 + Math.random() * 2.2;
+        var dur = 7 + Math.random() * 8;
+        flake.style.left = (Math.random() * 100).toFixed(1) + "%";
+        flake.style.width = flake.style.height = size.toFixed(1) + "px";
+        flake.style.animationDuration = dur.toFixed(1) + "s";
+        flake.style.animationDelay = (-Math.random() * dur).toFixed(1) + "s";
+        snow.appendChild(flake);
+      }
+    }
+  }
+
+  // reduced motion: park the ball animations at a resting point
+  if (reduceMotion) {
+    Array.prototype.forEach.call(document.querySelectorAll("#n-hobbies .ball"), function (ball) {
+      var anim = ball.querySelector("animateMotion");
+      if (anim) ball.removeChild(anim);
+      var rest = (ball.getAttribute("data-rest") || "0 0").split(" ");
+      ball.setAttribute("cx", rest[0]);
+      ball.setAttribute("cy", rest[1]);
+    });
+  }
 
   // ---- keyboard: J/K step, T theme, C copy ----
   window.addEventListener("keydown", function (e) {
