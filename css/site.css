@@ -146,7 +146,6 @@
   .theme-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
   @media (max-width: 600px) {
     .topbar { padding: 14px 16px; }
-    .topbar .who-sub { display: none; }
     .topbar nav { gap: 12px; }
   }
   @media (max-width: 380px) {
@@ -388,6 +387,8 @@
   .ski-map .rock-base { stop-color: var(--peak-base); }
   .ski-map .rock { fill: url(#rockGrad); stroke: var(--surface-2); stroke-width: 1.5; stroke-linejoin: round; transition: stroke .25s ease; }
   .ski-map .snowcap { fill: var(--snow); opacity: .92; }
+  .ski-map .elev { font-family: var(--mono); font-size: 7.5px; fill: var(--ink-2); transition: fill .25s ease, opacity .3s ease; }
+  .ski-map .peak.on .elev { fill: var(--accent-ink); font-weight: 600; }
   .ski-map .ground { stroke: var(--rule); stroke-width: 1; }
   .ski-map .peak { cursor: pointer; transition: opacity .3s ease; }
   .ski-map .pin { fill: var(--accent); stroke: var(--surface-2); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; transition: transform .25s ease; }
