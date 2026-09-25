@@ -12,14 +12,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Matthew Ginzburg">
 <meta property="og:title" content="Matthew Ginzburg — quant research & trading systems">
-<meta property="og:description" content="Prediction-market mispricings, a low-correlation ETF that beat 49 teams, and an agent that reads a 10-Q faster than I can.">
+<meta property="og:description" content="Quantitative Finance at Stevens: prediction-market trading, portfolio construction, and AI agents for financial research.">
 <meta property="og:url" content="https://matthewginz.github.io/">
 <meta property="og:image" content="https://matthewginz.github.io/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Matthew Ginzburg — quant research & trading systems">
-<meta name="twitter:description" content="Prediction-market mispricings, a low-correlation ETF that beat 49 teams, and an agent that reads a 10-Q faster than I can.">
+<meta name="twitter:description" content="Quantitative Finance at Stevens: prediction-market trading, portfolio construction, and AI agents for financial research.">
 <meta name="twitter:image" content="https://matthewginz.github.io/assets/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -237,7 +237,7 @@
     </div>
   </section>
 
-  <div class="section-label"><span>Projects</span><span class="count">04</span></div>
+  <div class="section-label"><span>Projects</span><span class="count">05</span></div>
 
   <section class="node side-l" id="n-polymarket" data-node>
     <div class="card">
@@ -245,21 +245,23 @@
         <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge amber">Monte Carlo–validated</span>
       </div>
-      <div class="ctitle-row"><h2 class="ctitle">Polymarket US World Cup Research</h2><span class="sub">Cross-venue prediction-market mispricing</span></div>
+      <div class="ctitle-row"><h2 class="ctitle">Polymarket US Quantitative Trading System</h2><span class="sub">Jun – Jul 2026</span></div>
       <p class="body">
-        Found a mechanical mispricing in compound prediction-market contracts on
-        Polymarket US and traded it during the 2026 World Cup. Validated the edge with
-        Monte Carlo null-hypothesis testing rather than just reporting a win rate.
+        Built two strategies trading Polymarket US World Cup player-prop contracts,
+        earning $815 profit on $1,200 (+67.9%) in 35 days. An unattended,
+        Ed25519-authenticated Python pipeline logged 157,595 three-leg quotes to SQLite
+        and recomputed each player's fair value up to every 60 seconds before kickoff;
+        I traded its signals by hand, bidding below fair value.
       </p>
       <div class="metrics">
-        <div><span class="lbl">Edge type</span><span class="val">mechanical mispricing</span></div>
-        <div><span class="lbl">Validation</span><span class="val">Monte Carlo null-hyp.</span></div>
-        <div><span class="lbl">Venue</span><span class="val">Polymarket US</span></div>
-        <div><span class="lbl">Result</span><span class="val amber">real capital, real fills</span></div>
+        <div><span class="lbl">Profit</span><span class="val amber">+$815 (+67.9%)</span></div>
+        <div><span class="lbl">Reverted vs null</span><span class="val">71.4% vs 18.8%</span></div>
+        <div><span class="lbl">Significance</span><span class="val">p = 0.00003</span></div>
+        <div><span class="lbl">Speed strategy</span><span class="val">136 / 136 won</span></div>
       </div>
       <div class="chiprow" style="margin:0 0 16px;">
         <span class="chip">prediction markets</span><span class="chip">Monte Carlo</span>
-        <span class="chip">market microstructure</span><span class="chip">Python</span>
+        <span class="chip">market microstructure</span><span class="chip">Python</span><span class="chip">SQLite</span>
       </div>
       <div class="linkrow">
         <a class="btn" href="https://github.com/matthewginz/polymarket-us-bot" target="_blank" rel="noopener">repo</a>
@@ -269,28 +271,70 @@
         <a class="btn" href="polymarket.html" target="_blank" rel="noopener">
           full write-up <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h7v7M13 3L3 13"/></svg>
         </a>
+        <details class="more">
+          <summary><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 2l6 6-6 6"/></svg>the two strategies</summary>
+          <div class="more-body"><b>Patience:</b> the core mispricing, validated with a Monte Carlo null-hypothesis test. 71.4% of positions reverted toward fair value vs. 18.8% under a volatility-matched random walk (p = 0.00003); it earned $274 over 40 positions. <b>Speed:</b> an event-driven strategy that bought contracts at $0.92–$0.99 and won all 136 held positions (+$541).</div>
+        </details>
       </div>
     </div>
   </section>
 
-  <section class="node side-r" id="n-10q" data-node>
+  <section class="node side-r" id="n-vanguard" data-node>
+    <div class="card">
+      <div class="card-head">
+        <span class="tag"><span class="sq"></span>COMPETITION</span>
+        <span class="badge amber">#1 total return of 50</span>
+      </div>
+      <div class="ctitle-row"><h2 class="ctitle">Vanguard ETF Challenge</h2><span class="sub">Sep – Dec 2025</span></div>
+      <p class="body">
+        Ranked #1 in total return (+2.58%) and 2nd overall by Sharpe ratio (1.49) among
+        50 teams in an 8-week Vanguard ETF competition, the only team to beat the
+        S&amp;P 500. Analyzed win rates across the team's millions of simulated
+        efficient-frontier portfolios to guard against early losses in the 8-week window.
+        Then designed and pitched 'RHO', an 11-asset, 7-sector ETF screened to under
+        0.574 correlation with the S&amp;P 500, placing 2nd of 6 teams in the NYSE pitch
+        to Vanguard.
+      </p>
+      <div class="metrics">
+        <div><span class="lbl">Total return</span><span class="val amber">+2.58% · #1</span></div>
+        <div><span class="lbl">Sharpe ratio</span><span class="val">1.49 · 2nd</span></div>
+        <div><span class="lbl">RHO backtest Sharpe</span><span class="val">0.84 vs 0.52</span></div>
+        <div><span class="lbl">RHO pitch</span><span class="val">2nd of 6, NYSE</span></div>
+      </div>
+      <div class="chiprow" style="margin:0 0 16px;">
+        <span class="chip">portfolio optimization</span><span class="chip">efficient frontier</span>
+        <span class="chip">Sharpe ratio</span><span class="chip">risk management</span>
+      </div>
+      <div class="linkrow">
+        <a class="btn" href="https://www.stevens.edu/news/stevens-students-soar-in-vanguard-etf-trading-competition" target="_blank" rel="noopener">
+          Stevens article <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h7v7M13 3L3 13"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="node side-l" id="n-10q" data-node>
     <div class="card live-glow">
       <div class="card-head">
         <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge live">live</span>
       </div>
-      <div class="ctitle-row"><h2 class="ctitle">10-Q Equity Research Agent</h2><span class="sub">Jul 2025 – Sep 2026</span></div>
+      <div class="ctitle-row"><h2 class="ctitle">10-Q Equity Research Agent</h2><span class="sub">Summer 2025 – Present</span></div>
       <p class="body">
-        Parses a company's real 10-Q filing and standardized XBRL financial data live
-        from SEC EDGAR, then runs a 6-step <code>Gemini API</code> pipeline to a
-        Bullish/Neutral/Bearish call. The calls are backtested point-in-time across the
-        S&amp;P 500 (~3,000 filings) against Wall Street consensus and simple baselines.
+        A 6-step LLM pipeline (Python, <code>Gemini API</code>) that turns each company's
+        10-Q text and XBRL financials, pulled live from SEC EDGAR, into a
+        Bullish/Neutral/Bearish call, deployed as a public Streamlit app. Backtested on
+        500+ S&amp;P 500 filings (growing nightly) using point-in-time data only, against
+        Wall Street consensus, momentum and always-bullish baselines, with binomial tests
+        and a long-short portfolio. It matched Wall Street at picking outperformers
+        (51% vs. 50%), with neither beating a coin flip, and its 54% raw hit rate trailed
+        a 64% always-bullish baseline (p = 0.07).
       </p>
       <div class="metrics">
         <div><span class="lbl">Pipeline</span><span class="val amber">6 steps</span></div>
-        <div><span class="lbl">Source</span><span class="val">SEC EDGAR, live</span></div>
-        <div><span class="lbl">Backtest</span><span class="val">~3,000 filings</span></div>
-        <div><span class="lbl">Model</span><span class="val">Gemini API</span></div>
+        <div><span class="lbl">Backtest</span><span class="val">500+ filings</span></div>
+        <div><span class="lbl">vs Wall Street</span><span class="val">51% vs 50%</span></div>
+        <div><span class="lbl">vs always-bullish</span><span class="val">54% vs 64%</span></div>
       </div>
       <div class="chiprow" style="margin:0 0 16px;">
         <span class="chip">SEC EDGAR</span><span class="chip">XBRL</span><span class="chip">Gemini API</span>
@@ -304,24 +348,27 @@
     </div>
   </section>
 
-  <section class="node side-l" id="n-kaiser" data-node>
+  <section class="node side-r" id="n-kaiser" data-node>
     <div class="card live-glow">
       <div class="card-head">
         <span class="tag"><span class="sq"></span>PROJECT</span>
         <span class="badge live">live</span>
       </div>
-      <div class="ctitle-row"><h2 class="ctitle">Kaiser-Stats</h2><span class="sub">Jul – Aug 2026</span></div>
+      <div class="ctitle-row"><h2 class="ctitle">Kaiser-Stats</h2><span class="sub">Jul 2026 – Present</span></div>
       <p class="body">
-        A stats engine for a local soccer league. It parses inconsistent historical
-        spreadsheet formats, streamlines registration, and turns live game-report emails
-        (via the <code>Gemini API</code>) into one unified per-player dataset, with
+        A stats engine that unifies 5 seasons (2022–2026, ~280+ games) of a local soccer
+        league's inconsistent spreadsheet history into one per-player dataset. Weekly
+        updates are automated: a scheduled routine uses the <code>Gemini API</code> to
+        parse the league's game-report emails and add the weekend's games, then a
+        separate stress tester independently validates the results. The public
+        registration and stats site is used by a 110+ person league mailing list, with
         data-integrity safeguards (player identity resolution, plus-minus sanity checks)
         and a transparent power-ranking formula.
       </p>
       <div class="metrics">
-        <div><span class="lbl">Domain</span><span class="val">local soccer league</span></div>
-        <div><span class="lbl">Parsing</span><span class="val">Gemini API</span></div>
-        <div><span class="lbl">Safeguards</span><span class="val">identity · +/- checks</span></div>
+        <div><span class="lbl">History</span><span class="val amber">5 seasons</span></div>
+        <div><span class="lbl">Games</span><span class="val">~280+</span></div>
+        <div><span class="lbl">League list</span><span class="val">110+ people</span></div>
         <div><span class="lbl">Stack</span><span class="val">Next.js + Supabase</span></div>
       </div>
       <div class="chiprow" style="margin:0 0 16px;">
@@ -337,7 +384,7 @@
     </div>
   </section>
 
-  <section class="node side-r" id="n-agenthon" data-node>
+  <section class="node side-l" id="n-agenthon" data-node>
     <div class="card">
       <div class="card-head">
         <span class="tag"><span class="sq"></span>PROJECT</span>
@@ -364,7 +411,7 @@
 
   <div class="section-label"><span>Awards &amp; Skills</span></div>
 
-  <section class="node side-l" id="n-awards" data-node>
+  <section class="node side-r" id="n-awards" data-node>
     <div class="card">
       <div class="card-head">
         <span class="tag"><span class="sq"></span>AWARDS</span>
@@ -372,8 +419,8 @@
       <h2 class="ctitle" style="margin-bottom:14px;">Honors &amp; awards</h2>
       <div class="kv">
         <div class="row"><span class="l">Vanguard ETF Challenge — total return</span><span class="r"><b>#1</b> of 50 teams</span></div>
-        <div class="row"><span class="l">'RHO' ETF pitch — NYSE invitational</span><span class="r"><b>2nd</b> place</span></div>
-        <div class="row"><span class="l">FIBA Stock Pitch — Disney DCF <a href="https://raw.githubusercontent.com/matthewginz/10q-equity-agent/main/docs/Disney_FIBA_Stock_Pitch.pdf" target="_blank" rel="noopener">deck ↗</a></span><span class="r"><b>3rd</b> place</span></div>
+        <div class="row"><span class="l">'RHO' ETF pitch — NYSE invitational</span><span class="r"><b>2nd</b> of 6 teams</span></div>
+        <div class="row"><span class="l">FIBA Stock Pitch — Disney DCF <a href="https://raw.githubusercontent.com/matthewginz/10q-equity-agent/main/docs/Disney_FIBA_Stock_Pitch.pdf" target="_blank" rel="noopener">deck ↗</a></span><span class="r"><b>3rd</b> of 15+ teams</span></div>
         <div class="row"><span class="l">Edwin Augustus Stevens Scholarship</span><span class="r"><b>$104k</b></span></div>
         <div class="row"><span class="l">Presidential Scholarship</span><span class="r"><b>$20k</b></span></div>
         <div class="row"><span class="l">GPA</span><span class="r"><b>3.7</b> / 4.0</span></div>
@@ -385,7 +432,7 @@
     </div>
   </section>
 
-  <section class="node side-r" id="n-skills" data-node>
+  <section class="node side-l" id="n-skills" data-node>
     <div class="card">
       <div class="card-head">
         <span class="tag"><span class="sq"></span>SKILLS</span>
