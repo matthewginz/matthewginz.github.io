@@ -118,7 +118,8 @@
       p.x = p.tx = p.hx;
       p.y = p.ty = p.hy;
       svgEl("circle", { "class": "hit", r: 9 }, g);
-      svgEl("circle", { "class": "body", r: 4.4 }, g);
+      svgEl("circle", { "class": "body", r: 5.4 }, g);
+      svgEl("text", { "class": "pnum", "text-anchor": "middle", y: 1.6 }, g).textContent = g.getAttribute("data-num") || "";
       return p;
     });
     if (!players.length) return;
@@ -142,7 +143,7 @@
     function placeTag() {
       if (!hovered) return;
       tag.setAttribute("x", hovered.x.toFixed(1));
-      tag.setAttribute("y", Math.max(7, hovered.y - 8).toFixed(1));
+      tag.setAttribute("y", Math.max(7, hovered.y - 9).toFixed(1));
     }
 
     // ---- play state ----
@@ -150,7 +151,7 @@
     var passesLeft = randInt(MIN_PASSES, MAX_PASSES);
     var action = { kind: "hold", until: 0 };
 
-    function heldSpot(p) { return { x: p.x + 3, y: p.y + (hoops ? -3 : 2) }; }
+    function heldSpot(p) { return { x: p.x + 4.5, y: p.y + (hoops ? -4 : 3) }; }
 
     function nextAction(now) {
       var from = heldSpot(holder);

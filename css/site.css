@@ -458,6 +458,7 @@
   .play .player .hit { fill: transparent; stroke: none; }
   .play .player .body { fill: var(--team); stroke: var(--team-2); stroke-width: 1.2; }
   .play .player:hover .body { stroke: var(--ink); stroke-width: 1.6; }
+  .play .pnum { font-family: var(--mono); font-weight: 700; font-size: 4.6px; fill: #fff; pointer-events: none; }
   .play .ptag, .play .pflash {
     fill: #fff; stroke: rgba(0, 0, 0, .72); paint-order: stroke; pointer-events: none; opacity: 0;
   }
