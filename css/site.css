@@ -435,13 +435,37 @@
 
   .field { width: 100%; height: auto; display: block; margin-top: 12px; }
   .field rect, .field line, .field circle, .field path { fill: none; stroke: color-mix(in srgb, var(--team) 45%, var(--rule)); stroke-width: 1; }
-  .field .mate { fill: var(--team); stroke: none; opacity: .75; }
   .field .goal { stroke: var(--ink-3); }
   .field .board { stroke: var(--ink-2); stroke-width: 1.6; }
   .field .hoop { stroke: var(--knicks-orange); stroke-width: 1.4; }
   .field .ball { stroke: none; }
   .chelsea .field .ball { fill: var(--ink); }
   .knicks .field .ball { fill: var(--knicks-orange); }
+  .field .goal.score, .field .hoop.score { stroke: #fff; stroke-width: 2; }
+
+  /* pass-and-score plays */
+  .play { overflow: visible; }
+  .play .player { cursor: pointer; }
+  .play .player .hit { fill: transparent; stroke: none; }
+  .play .player .body { fill: var(--team); stroke: var(--team-2); stroke-width: 1.2; }
+  .play .player:hover .body { stroke: var(--ink); stroke-width: 1.6; }
+  .play .ptag, .play .pflash {
+    fill: #fff; stroke: rgba(0, 0, 0, .72); paint-order: stroke; pointer-events: none; opacity: 0;
+  }
+  .play .ptag { font-family: var(--mono); font-size: 6.5px; stroke-width: 2px; transition: opacity .15s ease; }
+  .play .ptag.on { opacity: 1; }
+  .play .pflash {
+    font-family: var(--sans); font-weight: 700; font-size: 12px; letter-spacing: .02em; stroke-width: 2.6px;
+    transform-box: fill-box; transform-origin: center;
+  }
+  .play .pflash.go { animation: mg-flash 1.5s ease-out forwards; }
+  @keyframes mg-flash {
+    0% { opacity: 0; transform: scale(.85); }
+    12% { opacity: 1; transform: scale(1.08); }
+    25% { transform: scale(1); }
+    75% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1); }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .ski-map .peak.on .pin-ring { animation: none; opacity: .6; transform: scale(1.4); }
@@ -491,6 +515,7 @@
   }
   .hint-toast button:hover { color: var(--accent-ink); }
   @media (max-width: 560px) { .hint-toast { font-size: 11px; padding: 8px 12px; gap: 8px; } }
+  @media (hover: none) { footer.kbdhint, .hint-toast { display: none; } }
   @media (prefers-reduced-motion: reduce) { .hint-toast { transition: none; } }
 
   /* ---- print ---- */

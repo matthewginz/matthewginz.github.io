@@ -239,15 +239,171 @@
     }
   }
 
-  // reduced motion: park the ball animations at a resting point
-  if (reduceMotion) {
-    Array.prototype.forEach.call(document.querySelectorAll("#n-hobbies .ball"), function (ball) {
-      var anim = ball.querySelector("animateMotion");
-      if (anim) ball.removeChild(anim);
-      var rest = (ball.getAttribute("data-rest") || "0 0").split(" ");
-      ball.setAttribute("cx", rest[0]);
-      ball.setAttribute("cy", rest[1]);
+  // ---- off the clock: pass-and-score plays ----
+  // Players pass MIN_PASSES..MAX_PASSES times, then someone shoots and scores
+  // and their name flashes. Hover (or tap) a player to see who it is.
+  var MIN_PASSES = 3, MAX_PASSES = 10;
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  Array.prototype.forEach.call(document.querySelectorAll("svg.play"), initPlay);
+
+  function svgEl(tag, attrs, parent) {
+    var el = document.createElementNS(SVG_NS, tag);
+    Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+  function randInt(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+  function randIn(lo, hi) { return lo + Math.random() * (hi - lo); }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+  function initPlay(svg) {
+    var hoops = svg.getAttribute("data-mode") === "hoops";
+    var goal = { x: +svg.getAttribute("data-goal-x"), y: +svg.getAttribute("data-goal-y") };
+    var target = svg.querySelector(hoops ? ".hoop" : ".goal");
+    var drift = hoops ? 2 : 4;
+    var passMs = hoops ? 420 : 540;
+    var shotMs = hoops ? 900 : 460;
+
+    var players = Array.prototype.map.call(svg.querySelectorAll(".player"), function (g) {
+      var p = { g: g, name: g.getAttribute("data-name"), hx: +g.getAttribute("data-x"), hy: +g.getAttribute("data-y"), nextMove: 0 };
+      p.x = p.tx = p.hx;
+      p.y = p.ty = p.hy;
+      svgEl("circle", { "class": "hit", r: 9 }, g);
+      svgEl("circle", { "class": "body", r: 4.4 }, g);
+      return p;
     });
+    if (!players.length) return;
+
+    var ball = svgEl("circle", { "class": "ball", r: hoops ? 3.3 : 2.4 }, svg);
+    var tag = svgEl("text", { "class": "ptag", "text-anchor": "middle" }, svg);
+    var flash = svgEl("text", {
+      "class": "pflash", "text-anchor": "middle",
+      x: svg.getAttribute("data-flash-x"), y: svg.getAttribute("data-flash-y")
+    }, svg);
+
+    // ---- hover / tap labels ----
+    var hovered = null;
+    players.forEach(function (p) {
+      function show() { hovered = p; tag.textContent = p.name; tag.classList.add("on"); placeTag(); }
+      function hide() { if (hovered === p) { hovered = null; tag.classList.remove("on"); } }
+      p.g.addEventListener("mouseenter", show);
+      p.g.addEventListener("mouseleave", hide);
+      p.g.addEventListener("click", show);
+    });
+    function placeTag() {
+      if (!hovered) return;
+      tag.setAttribute("x", hovered.x.toFixed(1));
+      tag.setAttribute("y", Math.max(7, hovered.y - 8).toFixed(1));
+    }
+
+    // ---- play state ----
+    var holder = players[randInt(0, players.length - 1)];
+    var passesLeft = randInt(MIN_PASSES, MAX_PASSES);
+    var action = { kind: "hold", until: 0 };
+
+    function heldSpot(p) { return { x: p.x + 3, y: p.y + (hoops ? -3 : 2) }; }
+
+    function nextAction(now) {
+      var from = heldSpot(holder);
+      if (passesLeft > 0) {
+        var others = players.filter(function (p) { return p !== holder; });
+        action = { kind: "pass", to: others[randInt(0, others.length - 1)], t0: now, sx: from.x, sy: from.y };
+        passesLeft--;
+        return;
+      }
+      var ey = goal.y + (hoops ? 0 : randIn(-5, 5));
+      action = {
+        kind: "shot", shooter: holder, t0: now, sx: from.x, sy: from.y, ex: goal.x, ey: ey,
+        cy: Math.min(from.y, ey) - 38
+      };
+    }
+
+    function score(name) {
+      flash.textContent = name;
+      flash.classList.remove("go");
+      target.classList.remove("score");
+      void flash.getBoundingClientRect();
+      flash.classList.add("go");
+      target.classList.add("score");
+      setTimeout(function () { target.classList.remove("score"); }, 450);
+    }
+
+    function step(now) {
+      players.forEach(function (p) {
+        if (now > p.nextMove) {
+          p.tx = p.hx + randIn(-drift, drift);
+          p.ty = p.hy + randIn(-drift * 0.75, drift * 0.75);
+          p.nextMove = now + randIn(900, 1800);
+        }
+        p.x += (p.tx - p.x) * 0.04;
+        p.y += (p.ty - p.y) * 0.04;
+        p.g.setAttribute("transform", "translate(" + p.x.toFixed(2) + " " + p.y.toFixed(2) + ")");
+      });
+
+      var bx, by;
+      if (action.kind === "hold") {
+        var spot = heldSpot(holder);
+        bx = spot.x; by = spot.y;
+        if (now >= action.until) nextAction(now);
+      } else if (action.kind === "pass") {
+        var t = Math.min(1, (now - action.t0) / passMs);
+        var end = heldSpot(action.to);
+        var e = easeInOut(t);
+        bx = action.sx + (end.x - action.sx) * e;
+        by = action.sy + (end.y - action.sy) * e;
+        if (t >= 1) { holder = action.to; action = { kind: "hold", until: now + randIn(220, 600) }; }
+      } else if (action.kind === "shot") {
+        var ts = Math.min(1, (now - action.t0) / shotMs);
+        if (hoops) {
+          // quadratic arc up and into the rim
+          var mx = (action.sx + action.ex) / 2, u = 1 - ts;
+          bx = u * u * action.sx + 2 * u * ts * mx + ts * ts * action.ex;
+          by = u * u * action.sy + 2 * u * ts * action.cy + ts * ts * action.ey;
+        } else {
+          bx = action.sx + (action.ex - action.sx) * ts;
+          by = action.sy + (action.ey - action.sy) * ts;
+        }
+        if (ts >= 1) { score(action.shooter.name); action = { kind: "scored", until: now + 1500, x: bx, y: by }; }
+      } else {
+        bx = action.x; by = action.y;
+        if (now >= action.until) {
+          holder = players[randInt(0, players.length - 1)];
+          passesLeft = randInt(MIN_PASSES, MAX_PASSES);
+          action = { kind: "hold", until: now + 500 };
+        }
+      }
+      ball.setAttribute("cx", bx.toFixed(2));
+      ball.setAttribute("cy", by.toFixed(2));
+      placeTag();
+    }
+
+    // draw once so the static (reduced-motion / off-screen) state looks right
+    step(0);
+    if (reduceMotion) return;
+
+    // only animate while the tile is on screen and the tab is visible
+    var visible = false, raf = null;
+    function loop(now) { step(now); raf = requestAnimationFrame(loop); }
+    function sync() {
+      var shouldRun = visible && !document.hidden;
+      if (shouldRun && raf === null) {
+        action = { kind: "hold", until: performance.now() + 400 };
+        raf = requestAnimationFrame(loop);
+      } else if (!shouldRun && raf !== null) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        sync();
+      }).observe(svg);
+    } else {
+      visible = true;
+    }
+    document.addEventListener("visibilitychange", sync);
+    sync();
   }
 
   // ---- keyboard: J/K step, T theme, C copy ----
@@ -278,6 +434,8 @@
     try { localStorage.setItem(HINT_KEY, "1"); } catch (e) {}
   }
   function showHint() {
+    // keyboard shortcuts mean nothing on a touch screen
+    if (window.matchMedia && matchMedia("(hover: none)").matches) return;
     var seen = false;
     try { seen = !!localStorage.getItem(HINT_KEY); } catch (e) {}
     if (seen) return;
