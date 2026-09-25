@@ -253,7 +253,6 @@
   .badge.amber { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--accent-bg); }
 
   h1 { font-family: var(--sans); font-weight: 700; font-size: clamp(2rem, 5.6vw, 2.9rem); letter-spacing: -.01em; margin: 0 0 18px; text-wrap: balance; }
-  h1 .dot { color: var(--accent); }
   .standfirst { font-size: 1.04rem; color: var(--ink-2); max-width: 56ch; margin: 0 0 20px; }
   .standfirst b { color: var(--ink); font-weight: 600; }
 
