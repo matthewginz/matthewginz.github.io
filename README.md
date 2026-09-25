@@ -24,7 +24,8 @@ silently if the Clipboard API is unavailable. Use a server.
 | `index.html` | All content. Each node is a `<section class="node" data-node>`. |
 | `css/site.css` | Design tokens (light + dark, both token sets on `:root` / `[data-theme]`) and layout. |
 | `js/site.js` | Wire routing, scroll reveal, the left-hand rail, keyboard nav, theme persistence. |
-| `js/hobbies.js` | The hobbies panel: ski skyline, Chelsea / Knicks plays, poker table. |
+| `js/hobbies.js` | The hobbies panel: ski skyline, Chelsea / Knicks plays, shared animation helpers. |
+| `js/poker.js` | The poker table in the hobbies panel. |
 | `assets/resume.pdf` | Résumé, linked from the header and the contact node. |
 
 ## How the wires work
@@ -58,9 +59,13 @@ page wiring in `js/site.js`:
 - **Chelsea / Knicks plays.** Players are `<g class="player" data-name>` in
   the SVG. They pass 3–10 times at random, then shoot and always score, and
   the scorer's name flashes. Hover or tap a player to see who it is.
-- **Poker table.** A Hold'em hand dealt by the rules: riffle, hole cards
-  starting left of the button, bet/fold rounds, burn + flop/turn/river,
-  showdown. No winner is declared. Idle players do chip tricks.
+- **Poker table** (`js/poker.js`). Five top-down players (shoulders, head,
+  two hands) play Hold'em by the rules, one action every 5 seconds: blinds,
+  hole cards dealt from the small blind, preflop action from left of the big
+  blind, a burn before each street, showdown with no winner. Checks are a knock
+  on the table, bets are pushed in by hand, folds slide to the muck. Idle
+  players do real chip tricks: the two-stack riffle, the thumb flip and the
+  knuckle roll, and they peek at their cards.
 
 Every animation only runs while it's on screen and the tab is visible, and
 everything is static under `prefers-reduced-motion`. Team and table colours

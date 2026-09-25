@@ -495,8 +495,19 @@
   .felt-table .pk-rail { fill: var(--rail); }
   .felt-table .pk-felt { fill: var(--felt); stroke: color-mix(in srgb, #000 25%, var(--felt)); stroke-width: 1; }
   .pk-board-slots rect { fill: none; stroke: rgba(255, 255, 255, .2); stroke-width: .6; stroke-dasharray: 2 2; }
-  .pk-seat { fill: var(--surface); stroke: var(--ink-3); stroke-width: 1.2; transition: opacity .3s ease; }
-  .pk-seat.folded { opacity: .4; }
+  .pk-body { stroke: rgba(0, 0, 0, .3); stroke-width: .5; }
+  .pk-face { fill: #e2b690; }
+  .pk-ring { fill: none; stroke: transparent; stroke-width: 1.4; transition: stroke .3s ease; }
+  .pk-player { transition: opacity .4s ease; }
+  .pk-player.acting .pk-ring { stroke: var(--accent); }
+  .pk-player.folded { opacity: .45; }
+  .pk-hand .palm, .pk-hand .finger, .pk-hand .thumb { fill: #e2b690; stroke: #9c6b4a; stroke-width: .35; }
+  .pk-say {
+    font-family: var(--mono); font-weight: 600; font-size: 5.4px; fill: #fff;
+    stroke: rgba(0, 0, 0, .75); stroke-width: 1.6px; paint-order: stroke; opacity: 0; pointer-events: none;
+  }
+  .pk-say.show { animation: mg-say 3s ease-out forwards; }
+  @keyframes mg-say { 0% { opacity: 0; } 10% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
   .pk-card rect { fill: #fbfaf7; stroke: #bdb7ad; stroke-width: .5; }
   .pk-card text { font-family: var(--mono); font-weight: 600; font-size: 6px; fill: #17181a; }
   .pk-card.red text { fill: #c0392b; }
