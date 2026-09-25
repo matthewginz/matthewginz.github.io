@@ -128,41 +128,47 @@
           <div class="hobby-label"><span>Skiing</span><span>highest skiable point</span></div>
           <div class="ski-readout"><span class="tri">▲</span> <span id="skiReadout">hover a mountain</span></div>
 
-          <svg class="ski-map" id="skiMap" viewBox="0 0 480 240" role="img" aria-label="Skyline of the five mountains I've skied, drawn to rough relative height: Shawnee, Mont-Tremblant, Killington, the Dolomites and the Matterhorn">
+          <svg class="ski-map" id="skiMap" viewBox="0 0 480 240" role="img" aria-label="Skyline of the five mountains I've skied, drawn to scale by highest skiable point: Shawnee, Mont-Tremblant, Killington, the Dolomites and the Matterhorn">
             <defs>
               <linearGradient id="rockGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" class="rock-top"/>
                 <stop offset="1" class="rock-base"/>
               </linearGradient>
             </defs>
+            <g class="scale-guides">
+              <line x1="0" y1="173.1" x2="480" y2="173.1"/><text x="2" y="171.1">1,000 m</text>
+              <line x1="0" y1="114.2" x2="480" y2="114.2"/><text x="2" y="112.2">2,000 m</text>
+              <line x1="0" y1="55.3" x2="480" y2="55.3"/><text x="2" y="53.3">3,000 m</text>
+            </g>
             <g class="peak" data-peak="matterhorn">
-              <path class="rock" d="M338 232 L384 126.4 L397 78.4 L404 46.4 L411 27.2 L419 35.2 L417 64 L431 110.4 L480 232 Z"/>
-              <path class="snowcap" d="M395 84.8 L404 46.4 L411 27.2 L419 35.2 L417 64 L423 86.4 L413 75.2 L405 92.8 Z"/>
-              <circle class="pin-ring" cx="411" cy="27.2" r="7"/><circle class="pin" cx="411" cy="27.2" r="3.2"/>
-              <text class="elev" x="411" y="19.7" text-anchor="middle">3,480 m</text>
+              <path class="rock" d="M328 232 L360 170.5 L378 119.2 L390 72.1 L399 39.3 L404 27 L409 33.2 L412 47.5 L415 68 L419 96.7 L434 145.9 L454 191 L480 232 Z"/>
+              <path class="snowcap" d="M381.7 104.9 L390 72.1 L399 39.3 L404 27 L409 33.2 L412 47.5 L415 68 L419 96.7 L421.5 104.9 L411.5 107.1 L401.6 104.3 L391.6 107.1 Z"/>
+              <circle class="pin-ring" cx="404" cy="27" r="7"/><circle class="pin" cx="404" cy="27" r="3.2"/>
+              <text class="elev" x="404" y="19.5" text-anchor="middle">3,480 m</text>
             </g>
             <g class="peak" data-peak="dolomites">
-              <path class="rock" d="M248 232 L279 155.2 L289 166.4 L301 97.6 L309 123.2 L315 78.4 L322 115.2 L332 92.8 L341 145.6 L352 132.8 L384 232 Z"/>
-              <path class="snowcap" d="M298 113.6 L301 97.6 L304 110.4 Z M311 94.4 L315 78.4 L319 97.6 Z M329 104 L332 92.8 L335 107.2 Z"/>
-              <circle class="pin-ring" cx="315" cy="78.4" r="7"/><circle class="pin" cx="315" cy="78.4" r="3.2"/>
-              <text class="elev" x="315" y="70.9" text-anchor="middle">3,265 m</text>
+              <path class="rock" d="M234 232 L254 158.9 L261 166.6 L270 93.5 L275 120.4 L283 58.9 L288 85.8 L294 39.7 L300 72.4 L306 49.3 L311 97.4 L317 85.8 L325 139.7 L338 174.3 L362 232 Z"/>
+              <path class="snowcap" d="M280.5 78.1 L283 58.9 L286.6 78.1 L285.1 80.3 L283.5 77.5 L282 80.3 Z M289 78.1 L294 39.7 L300 72.4 L306 49.3 L309 78.1 L304 80.3 L299 77.5 L294 80.3 Z"/>
+              <circle class="pin-ring" cx="294" cy="39.7" r="7"/><circle class="pin" cx="294" cy="39.7" r="3.2"/>
+              <text class="elev" x="294" y="32.2" text-anchor="middle">3,265 m</text>
             </g>
             <g class="peak" data-peak="killington">
-              <path class="rock" d="M158 232 L204 158.4 L225 139.2 L246 156.8 L292 232 Z"/>
-              <path class="snowcap" d="M211 150.4 L225 139.2 L239 150.4 L231 156.8 L225 148.8 L218 156.8 Z"/>
-              <circle class="pin-ring" cx="225" cy="139.2" r="7"/><circle class="pin" cx="225" cy="139.2" r="3.2"/>
-              <text class="elev" x="225" y="131.7" text-anchor="middle">1,293 m</text>
+              <path class="rock" d="M150 232 L172 201.5 L190 175.6 L204 159.6 L212 155.8 L221 158.9 L236 175.6 L254 204.6 L274 232 Z"/>
+              <path class="snowcap" d="M188.9 177.2 L190 175.6 L204 159.6 L212 155.8 L221 158.9 L236 175.6 L236.9 177.2 L224.9 179.4 L212.9 176.6 L200.9 179.4 Z"/>
+              <circle class="pin-ring" cx="212" cy="155.8" r="7"/><circle class="pin" cx="212" cy="155.8" r="3.2"/>
+              <text class="elev" x="212" y="148.3" text-anchor="middle">1,293 m</text>
             </g>
             <g class="peak" data-peak="tremblant">
-              <path class="rock" d="M72 232 L120 172.8 L140 158.4 L162 174.4 L206 232 Z"/>
-              <path class="snowcap" d="M127 168 L140 158.4 L153 168 L146 172.8 L140 166.4 L133 172.8 Z"/>
-              <circle class="pin-ring" cx="140" cy="158.4" r="7"/><circle class="pin" cx="140" cy="158.4" r="3.2"/>
-              <text class="elev" x="140" y="150.9" text-anchor="middle">875 m</text>
+              <path class="rock" d="M68 232 L88 212.4 L106 193.9 L119 183.5 L128 180.5 L139 182.5 L155 195.9 L172 215.5 L188 232 Z"/>
+              <path class="snowcap" d="M105 194.9 L106 193.9 L119 183.5 L128 180.5 L139 182.5 L153.8 194.9 L141.6 197.1 L129.4 194.3 L117.2 197.1 Z"/>
+              <circle class="pin-ring" cx="128" cy="180.5" r="7"/><circle class="pin" cx="128" cy="180.5" r="3.2"/>
+              <text class="elev" x="128" y="173" text-anchor="middle">875 m</text>
             </g>
             <g class="peak" data-peak="shawnee">
-              <path class="rock" d="M0 232 C24 232 34 177.6 55 177.6 C76 177.6 88 232 114 232 Z"/>
-              <circle class="pin-ring" cx="55" cy="177.6" r="7"/><circle class="pin" cx="55" cy="177.6" r="3.2"/>
-              <text class="elev" x="55" y="170.1" text-anchor="middle">410 m</text>
+              <path class="rock" d="M0 232 L18 221.1 L36 210.7 L50 207.8 L65 210.3 L82 221.1 L100 232 Z"/>
+              <path class="snowcap" d="M28.5 215.1 L36 210.7 L50 207.8 L65 210.3 L72.6 215.1 L61.5 217.3 L50.5 214.5 L39.5 217.3 Z"/>
+              <circle class="pin-ring" cx="50" cy="207.8" r="7"/><circle class="pin" cx="50" cy="207.8" r="3.2"/>
+              <text class="elev" x="50" y="200.3" text-anchor="middle">410 m</text>
             </g>
             <line class="ground" x1="0" y1="232" x2="480" y2="232"/>
           </svg>
