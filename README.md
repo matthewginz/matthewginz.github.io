@@ -24,6 +24,7 @@ silently if the Clipboard API is unavailable. Use a server.
 | `index.html` | All content. Each node is a `<section class="node" data-node>`. |
 | `css/site.css` | Design tokens (light + dark, both token sets on `:root` / `[data-theme]`) and layout. |
 | `js/site.js` | Wire routing, scroll reveal, the left-hand rail, keyboard nav, theme persistence. |
+| `js/hobbies.js` | The hobbies panel: ski skyline, Chelsea / Knicks plays, poker table. |
 | `assets/resume.pdf` | Résumé, linked from the header and the contact node. |
 
 ## How the wires work
@@ -48,12 +49,23 @@ resize, so nothing else needs updating. Give a project card `side-l` or
 
 ## Off the clock
 
-The hobbies node (`#n-hobbies`) is a ski skyline plus two team tiles. The five
-peaks are hand-drawn SVG, roughly to relative height, not to scale. Hovering,
-focusing or clicking a peak or its legend row highlights both (they share a
-`data-peak` key); otherwise `js/site.js` tours through them every 2.6s. Snow
-and the ball animations are skipped under `prefers-reduced-motion`. Team
-colours live in the `--chelsea*` / `--knicks*` tokens in `css/site.css`.
+The hobbies node (`#n-hobbies`) lives in `js/hobbies.js`, kept apart from the
+page wiring in `js/site.js`:
+
+- **Ski skyline.** Five hand-drawn SVG peaks, roughly to relative height, not
+  to scale. Hovering, focusing or clicking a peak or its legend row highlights
+  both (they share a `data-peak` key); otherwise it tours through them.
+- **Chelsea / Knicks plays.** Players are `<g class="player" data-name>` in
+  the SVG. They pass 3–10 times at random, then shoot and always score, and
+  the scorer's name flashes. Hover or tap a player to see who it is.
+- **Poker table.** A Hold'em hand dealt by the rules: riffle, hole cards
+  starting left of the button, bet/fold rounds, burn + flop/turn/river,
+  showdown. No winner is declared. Idle players do chip tricks.
+
+Every animation only runs while it's on screen and the tab is visible, and
+everything is static under `prefers-reduced-motion`. Team and table colours
+are the `--chelsea*`, `--knicks*`, `--felt` and `--rail` tokens in
+`css/site.css`.
 
 ## Keyboard
 
