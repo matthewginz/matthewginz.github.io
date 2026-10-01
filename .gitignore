@@ -9,3 +9,8 @@ Thumbs.db
 
 # Local server / logs
 *.log
+
+# secrets (added by _workspace-kit/onboard.py)
+.env
+.env.*
+!.env.example
